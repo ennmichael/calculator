@@ -1,0 +1,21 @@
+<template id="my-calculator">
+  <calculator-screen operand="1" operator="+" active="2"></calculator-screen>
+  <calculator-buttons id="buttons"></calculator-buttons>
+
+  <style></style>
+</template>
+
+<script>
+  customElements.define(
+    "my-calculator",
+    class extends HTMLElement {
+      constructor() {
+        super();
+        attachTemplate(this, document.querySelector("#my-calculator"));
+        this.shadowRoot.querySelector("#buttons").onButton = (button) => {
+          alert(button);
+        };
+      }
+    }
+  );
+</script>

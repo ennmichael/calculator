@@ -1,0 +1,19 @@
+<template id="calculator-button">
+  <button></button>
+</template>
+
+<script>
+  customElements.define(
+    "calculator-button",
+    class extends HTMLElement {
+      constructor() {
+        super();
+        attachTemplate(this, document.querySelector("#calculator-button"));
+        const button = this.shadowRoot.querySelector("button");
+        const symbol = this.getAttribute("symbol");
+        button.innerText = symbol;
+        button.onclick = () => this.onPressed(symbol);
+      }
+    }
+  );
+</script>

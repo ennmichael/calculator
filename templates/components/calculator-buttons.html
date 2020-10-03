@@ -1,0 +1,35 @@
+<template id="calculator-buttons">
+  <calculator-button symbol="1"></calculator-button>
+  <calculator-button symbol="2"></calculator-button>
+  <calculator-button symbol="3"></calculator-button>
+  <calculator-button symbol="4"></calculator-button>
+  <calculator-button symbol="5"></calculator-button>
+  <calculator-button symbol="6"></calculator-button>
+  <calculator-button symbol="7"></calculator-button>
+  <calculator-button symbol="8"></calculator-button>
+  <calculator-button symbol="9"></calculator-button>
+  <calculator-button symbol="0"></calculator-button>
+</template>
+
+<script>
+  customElements.define(
+    "calculator-buttons",
+    class extends HTMLElement {
+      constructor() {
+        super();
+        attachTemplate(this, document.querySelector("#calculator-buttons"));
+        this.forwardButtonCallbacks();
+      }
+
+      forwardButtonCallbacks() {
+        for (const btn of this.buttons) {
+          btn.onPressed = (b) => this.onButton(b);
+        }
+      }
+
+      get buttons() {
+        return this.shadowRoot.querySelectorAll("calculator-button");
+      }
+    }
+  );
+</script>

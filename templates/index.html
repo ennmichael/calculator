@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Calculator In Web Components</title>
+  </head>
+  <body>
+    <script src="utils.js"></script>
+
+    {% for component in components %} {% include component %} {% endfor %}
+
+    <my-calculator></my-calculator>
+  </body>
+</html>

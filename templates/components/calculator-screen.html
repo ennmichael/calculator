@@ -1,0 +1,44 @@
+<template id="calculator-screen">
+  <p class="inline" id="operand"></p>
+  <p class="inline" id="operator"></p>
+  <p class="inline" id="active"></p>
+
+  <style>
+    .inline {
+      display: inline;
+    }
+  </style>
+</template>
+
+<script>
+  customElements.define(
+    "calculator-screen",
+    class extends HTMLElement {
+      static get observedAttributes() {
+        return ["operand", "operator", "active"];
+      }
+
+      constructor() {
+        super();
+        attachTemplate(this, document.querySelector("#calculator-screen"));
+        this.redraw();
+      }
+
+      attributeChangedCallback() {
+        this.redraw();
+      }
+
+      redraw() {
+        this.shadowRoot.querySelector("#operand").innerHTML = this.getAttribute(
+          "operand"
+        );
+        this.shadowRoot.querySelector(
+          "#operator"
+        ).innerHTML = this.getAttribute("operator");
+        this.shadowRoot.querySelector("#active").innerHTML = this.getAttribute(
+          "active"
+        );
+      }
+    }
+  );
+</script>
