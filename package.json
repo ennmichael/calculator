@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/ennmichael/calculator#readme",
   "dependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^8.1.3",
     "prettier": "^2.1.2"
   }
 }

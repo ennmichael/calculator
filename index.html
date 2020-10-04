@@ -6,11 +6,12 @@
   </head>
   <body>
     <script src="utils.js"></script>
+    <script src="Calculator.js"></script>
 
      <template id="calculator-screen">
   <p class="inline" id="operand"></p>
   <p class="inline" id="operator"></p>
-  <p class="inline" id="active"></p>
+  <p class="inline" id="current-number"></p>
 
   <style>
     .inline {
@@ -24,7 +25,7 @@
     "calculator-screen",
     class extends HTMLElement {
       static get observedAttributes() {
-        return ["operand", "operator", "active"];
+        return ["operand", "operator", "current-number"];
       }
 
       constructor() {
@@ -44,9 +45,9 @@
         this.shadowRoot.querySelector(
           "#operator"
         ).innerHTML = this.getAttribute("operator");
-        this.shadowRoot.querySelector("#active").innerHTML = this.getAttribute(
-          "active"
-        );
+        this.shadowRoot.querySelector(
+          "#current-number"
+        ).innerHTML = this.getAttribute("current-number");
       }
     }
   );
@@ -79,6 +80,12 @@
   <calculator-button symbol="8"></calculator-button>
   <calculator-button symbol="9"></calculator-button>
   <calculator-button symbol="0"></calculator-button>
+  <calculator-button symbol="+"></calculator-button>
+  <calculator-button symbol="-"></calculator-button>
+  <calculator-button symbol="*"></calculator-button>
+  <calculator-button symbol="/"></calculator-button>
+  <calculator-button symbol="="></calculator-button>
+  <calculator-button symbol="del"></calculator-button>
 </template>
 
 <script>
@@ -103,7 +110,8 @@
     }
   );
 </script>  <template id="my-calculator">
-  <calculator-screen operand="1" operator="+" active="2"></calculator-screen>
+  <calculator-screen></calculator-screen>
+  <br />
   <calculator-buttons id="buttons"></calculator-buttons>
 
   <style></style>
@@ -115,10 +123,20 @@
     class extends HTMLElement {
       constructor() {
         super();
+        this.calculator = new Calculator();
         attachTemplate(this, document.querySelector("#my-calculator"));
+        this.redraw();
         this.shadowRoot.querySelector("#buttons").onButton = (button) => {
-          alert(button);
+          this.calculator.handleSymbol(button);
+          this.redraw();
         };
+      }
+
+      redraw() {
+        const screen = this.shadowRoot.querySelector("calculator-screen");
+        screen.setAttribute("operand", this.calculator.operand);
+        screen.setAttribute("operator", this.calculator.operator);
+        screen.setAttribute("current-number", this.calculator.currentNumber);
       }
     }
   );

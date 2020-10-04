@@ -1,5 +1,6 @@
 <template id="my-calculator">
-  <calculator-screen operand="1" operator="+" active="2"></calculator-screen>
+  <calculator-screen></calculator-screen>
+  <br />
   <calculator-buttons id="buttons"></calculator-buttons>
 
   <style></style>
@@ -11,10 +12,20 @@
     class extends HTMLElement {
       constructor() {
         super();
+        this.calculator = new Calculator();
         attachTemplate(this, document.querySelector("#my-calculator"));
+        this.redraw();
         this.shadowRoot.querySelector("#buttons").onButton = (button) => {
-          alert(button);
+          this.calculator.handleSymbol(button);
+          this.redraw();
         };
+      }
+
+      redraw() {
+        const screen = this.shadowRoot.querySelector("calculator-screen");
+        screen.setAttribute("operand", this.calculator.operand);
+        screen.setAttribute("operator", this.calculator.operator);
+        screen.setAttribute("current-number", this.calculator.currentNumber);
       }
     }
   );

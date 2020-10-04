@@ -1,7 +1,7 @@
 <template id="calculator-screen">
   <p class="inline" id="operand"></p>
   <p class="inline" id="operator"></p>
-  <p class="inline" id="active"></p>
+  <p class="inline" id="current-number"></p>
 
   <style>
     .inline {
@@ -15,7 +15,7 @@
     "calculator-screen",
     class extends HTMLElement {
       static get observedAttributes() {
-        return ["operand", "operator", "active"];
+        return ["operand", "operator", "current-number"];
       }
 
       constructor() {
@@ -35,9 +35,9 @@
         this.shadowRoot.querySelector(
           "#operator"
         ).innerHTML = this.getAttribute("operator");
-        this.shadowRoot.querySelector("#active").innerHTML = this.getAttribute(
-          "active"
-        );
+        this.shadowRoot.querySelector(
+          "#current-number"
+        ).innerHTML = this.getAttribute("current-number");
       }
     }
   );
