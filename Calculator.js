@@ -1,8 +1,6 @@
 class Calculator {
   constructor() {
-    this.operand = "";
-    this.operator = "";
-    this.currentNumber = "0";
+    this.clear();
   }
 
   handleSymbol(symbol) {
@@ -10,6 +8,7 @@ class Calculator {
     else if (this.isOperator(symbol)) this.handleOperator(symbol);
     else if (symbol === "=") this.handleEquals();
     else if (symbol === "del") this.handleDelete();
+    else if (symbol === "clr") this.clear();
     else throw new Error(`Unknown symbol ${symbol}`);
   }
 
@@ -62,7 +61,12 @@ class Calculator {
       0,
       this.currentNumber.length - 1
     );
-    if (this.currentNumber === "")
-      this.currentNumber = "0";
+    if (this.currentNumber === "") this.currentNumber = "0";
+  }
+
+  clear() {
+    this.operand = "";
+    this.operator = "";
+    this.currentNumber = "0";
   }
 }
