@@ -32,8 +32,9 @@ class TemplateBuilder(FileSystemEventHandler):
     def build_output_with_logging(self) -> None:
         try:
             log('Building...')
-            self.build_output()
-            log(f'Built {OUTPUT_PATH}.')
+            components = TemplateBuilder.components()
+            self.build_output(components)
+            log(f'Built {OUTPUT_PATH} from {", ".join(components)}.')
         except jinja2.exceptions.TemplateSyntaxError as e:
             log(f'Syntax error: {e.filename}, line {e.lineno}: {e.message}.')
         except jinja2.exceptions.TemplateNotFound as e:
@@ -41,11 +42,10 @@ class TemplateBuilder(FileSystemEventHandler):
         except jinja2.exceptions.TemplateError as e:
             log(f'Template error: {e.message}.')
 
-    def build_output(self) -> None:
+    def build_output(self, components: List[str]) -> None:
         template = self.jinja_env.get_template('index.html')
         with open(OUTPUT_PATH, 'w') as f:
-            print(TemplateBuilder.components())
-            f.write(template.render(components=TemplateBuilder.components()))
+            f.write(template.render(components=components))
 
     @staticmethod
     def components() -> List[str]:

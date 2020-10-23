@@ -26,12 +26,18 @@ class Calculator {
   }
 
   handleOperator(operator) {
+    if (this.operator !== "") this.calculate();
+
     this.operand = this.currentNumber;
     this.operator = operator;
     this.currentNumber = "0";
   }
 
   handleEquals() {
+    this.calculate();
+  }
+
+  calculate() {
     const operand = Number(this.operand);
     let currentNumber = Number(this.currentNumber);
 
