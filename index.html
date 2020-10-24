@@ -3,17 +3,74 @@
   <head>
     <meta charset="UTF-8" />
     <title>Calculator In Web Components</title>
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <script src="utils.js"></script>
     <script src="Calculator.js"></script>
 
-     <template id="calculator-screen">
-  <p class="inline" id="operand"></p>
-  <p class="inline" id="operator"></p>
-  <p class="inline" id="current-number"></p>
+     <template id="my-button">
+  <div class="button">
+    <slot name="content">Button</slot>
+  </div>
 
   <style>
+    .button {
+      width: 100%;
+      height: 100%;
+    }
+
+    .button:hover {
+      cursor: pointer;
+    }
+  </style>
+</template>
+
+<script>
+  customElements.define(
+    "my-button",
+    class extends HTMLElement {
+      constructor() {
+        super();
+        attachTemplate(this, document.querySelector("#my-button"));
+        const keyframes = [
+          { backgroundColor: "white" },
+          { backgroundColor: this.getAttribute("highlight-color") },
+          { backgroundColor: "white" },
+        ];
+        const timing = {
+          duration: 300,
+          iterations: 1,
+        };
+
+        const button = this.shadowRoot.querySelector(".button");
+        this.animation = button.animate(keyframes, timing);
+        this.animation.pause();
+        button.onclick = () => {
+          this.playAnimation();
+          this.onPressed();
+        };
+      }
+
+      playAnimation() {
+        this.animation.cancel();
+        this.animation.play();
+      }
+    }
+  );
+</script>  <template id="calculator-screen">
+  <div class="screen">
+    <p class="inline" id="operand"></p>
+    <p class="inline" id="operator"></p>
+    <p class="inline" id="current-number"></p>
+  </div>
+
+  <style>
+    .screen {
+      height: 1.7em;
+        margin-right: .3em;
+    }
+
     .inline {
       display: inline;
     }
@@ -52,7 +109,21 @@
     }
   );
 </script>  <template id="calculator-button">
-  <button></button>
+  <my-button class="button" highlight-color="#e5f7d1">
+    <span class="content" slot="content"></span>
+  </my-button>
+
+  <style>
+    .content {
+      border: solid var(--border-size) var(--border-color);
+      width: 100%;
+      height: 100%;
+      display: flex;
+      box-sizing: border-box;
+      align-items: center;
+      justify-content: center;
+    }
+  </style>
 </template>
 
 <script>
@@ -62,31 +133,90 @@
       constructor() {
         super();
         attachTemplate(this, document.querySelector("#calculator-button"));
-        const button = this.shadowRoot.querySelector("button");
         const symbol = this.getAttribute("symbol");
-        button.innerText = symbol;
-        button.onclick = () => this.onPressed(symbol);
+        this.shadowRoot.querySelector(".content").innerHTML = symbol;
+        this.shadowRoot.querySelector(".button").onPressed = () =>
+          this.onPressed(symbol);
       }
     }
   );
 </script>  <template id="calculator-buttons">
-  <calculator-button symbol="1"></calculator-button>
-  <calculator-button symbol="2"></calculator-button>
-  <calculator-button symbol="3"></calculator-button>
-  <calculator-button symbol="4"></calculator-button>
-  <calculator-button symbol="5"></calculator-button>
-  <calculator-button symbol="6"></calculator-button>
-  <calculator-button symbol="7"></calculator-button>
-  <calculator-button symbol="8"></calculator-button>
-  <calculator-button symbol="9"></calculator-button>
-  <calculator-button symbol="0"></calculator-button>
-  <calculator-button symbol="+"></calculator-button>
-  <calculator-button symbol="-"></calculator-button>
-  <calculator-button symbol="*"></calculator-button>
-  <calculator-button symbol="/"></calculator-button>
-  <calculator-button symbol="="></calculator-button>
-  <calculator-button symbol="del"></calculator-button>
-  <calculator-button symbol="clr"></calculator-button>
+  <div class="buttons">
+    <calculator-button style="grid-area: btn-1" symbol="1"></calculator-button>
+    <calculator-button style="grid-area: btn-2" symbol="2"></calculator-button>
+    <calculator-button style="grid-area: btn-3" symbol="3"></calculator-button>
+    <calculator-button style="grid-area: btn-4" symbol="4"></calculator-button>
+    <calculator-button style="grid-area: btn-5" symbol="5"></calculator-button>
+    <calculator-button style="grid-area: btn-6" symbol="6"></calculator-button>
+    <calculator-button style="grid-area: btn-7" symbol="7"></calculator-button>
+    <calculator-button style="grid-area: btn-8" symbol="8"></calculator-button>
+    <calculator-button style="grid-area: btn-9" symbol="9"></calculator-button>
+    <calculator-button style="grid-area: btn-0" symbol="0"></calculator-button>
+
+    <calculator-button
+      style="grid-area: btn-plus"
+      symbol="+"
+    ></calculator-button>
+
+    <calculator-button
+      style="grid-area: btn-minus"
+      symbol="-"
+    ></calculator-button>
+
+    <calculator-button
+      style="grid-area: btn-times"
+      symbol="*"
+    ></calculator-button>
+
+    <calculator-button
+      style="grid-area: btn-divides"
+      symbol="/"
+    ></calculator-button>
+
+    <calculator-button
+      style="grid-area: btn-equals"
+      symbol="="
+    ></calculator-button>
+
+    <calculator-button
+      style="grid-area: btn-cpy"
+      symbol="cpy"
+    ></calculator-button>
+
+    <calculator-button
+      style="grid-area: btn-pst"
+      symbol="pst"
+    ></calculator-button>
+
+    <calculator-button
+      style="grid-area: btn-neg"
+      symbol="neg"
+    ></calculator-button>
+
+    <calculator-button
+      style="grid-area: btn-del"
+      symbol="del"
+    ></calculator-button>
+
+    <calculator-button
+      style="grid-area: btn-clr"
+      symbol="clr"
+    ></calculator-button>
+  </div>
+
+  <style>
+    .buttons {
+      display: grid;
+      grid-template-rows: repeat(4, 2.5em);
+      grid-template-columns: repeat(5, 2.3em);
+      grid-template-areas:
+        "btn-1 btn-2 btn-3 btn-4 btn-5"
+        "btn-6 btn-7 btn-8 btn-9 btn-0"
+        "btn-plus btn-minus btn-times btn-divides btn-equals"
+        "btn-cpy btn-pst btn-neg btn-del btn-clr";
+      grid-gap: var(--border-size);
+    }
+  </style>
 </template>
 
 <script>
@@ -111,11 +241,28 @@
     }
   );
 </script>  <template id="my-calculator">
-  <calculator-screen></calculator-screen>
-  <br />
-  <calculator-buttons id="buttons"></calculator-buttons>
+  <div class="calculator">
+    <calculator-screen class="screen"></calculator-screen>
+    <calculator-buttons id="buttons"></calculator-buttons>
+  </div>
 
-  <style></style>
+  <style>
+    .calculator {
+      --primary-color: #dc7e00;
+      --border-color: #efbf3f;
+      --border-size: 0.09em;
+
+      color: var(--primary-color);
+      width: min-content;
+      display: flex;
+      flex-direction: column;
+      font-size: 3em;
+    }
+
+    .screen {
+      align-self: end;
+    }
+  </style>
 </template>
 
 <script>
@@ -126,18 +273,40 @@
         super();
         this.calculator = new Calculator();
         attachTemplate(this, document.querySelector("#my-calculator"));
+        this.screen = this.shadowRoot.querySelector("calculator-screen");
+        this.clipboard = "";
         this.redraw();
         this.shadowRoot.querySelector("#buttons").onButton = (button) => {
-          this.calculator.handleSymbol(button);
-          this.redraw();
+          if (button === "cpy") {
+            this.copy();
+          } else if (button === "pst") {
+            this.paste();
+          } else {
+            this.calculator.handleSymbol(button);
+            this.redraw();
+          }
         };
       }
 
+      copy() {
+        if (this.calculator.operator === "")
+          this.clipboard = this.calculator.currentNumber;
+      }
+
+      paste() {
+        if (this.calculator.currentNumberUnset()) {
+          this.calculator.currentNumber = this.clipboard;
+          this.redraw();
+        }
+      }
+
       redraw() {
-        const screen = this.shadowRoot.querySelector("calculator-screen");
-        screen.setAttribute("operand", this.calculator.operand);
-        screen.setAttribute("operator", this.calculator.operator);
-        screen.setAttribute("current-number", this.calculator.currentNumber);
+        this.screen.setAttribute("operand", this.calculator.operand);
+        this.screen.setAttribute("operator", this.calculator.operator);
+        this.screen.setAttribute(
+          "current-number",
+          this.calculator.currentNumber
+        );
       }
     }
   );

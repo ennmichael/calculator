@@ -1,9 +1,26 @@
 <template id="my-calculator">
-  <calculator-screen></calculator-screen>
-  <br />
-  <calculator-buttons id="buttons"></calculator-buttons>
+  <div class="calculator">
+    <calculator-screen class="screen"></calculator-screen>
+    <calculator-buttons id="buttons"></calculator-buttons>
+  </div>
 
-  <style></style>
+  <style>
+    .calculator {
+      --primary-color: #dc7e00;
+      --border-color: #efbf3f;
+      --border-size: 0.09em;
+
+      color: var(--primary-color);
+      width: min-content;
+      display: flex;
+      flex-direction: column;
+      font-size: 3em;
+    }
+
+    .screen {
+      align-self: end;
+    }
+  </style>
 </template>
 
 <script>
@@ -14,18 +31,40 @@
         super();
         this.calculator = new Calculator();
         attachTemplate(this, document.querySelector("#my-calculator"));
+        this.screen = this.shadowRoot.querySelector("calculator-screen");
+        this.clipboard = "";
         this.redraw();
         this.shadowRoot.querySelector("#buttons").onButton = (button) => {
-          this.calculator.handleSymbol(button);
-          this.redraw();
+          if (button === "cpy") {
+            this.copy();
+          } else if (button === "pst") {
+            this.paste();
+          } else {
+            this.calculator.handleSymbol(button);
+            this.redraw();
+          }
         };
       }
 
+      copy() {
+        if (this.calculator.operator === "")
+          this.clipboard = this.calculator.currentNumber;
+      }
+
+      paste() {
+        if (this.calculator.currentNumberUnset()) {
+          this.calculator.currentNumber = this.clipboard;
+          this.redraw();
+        }
+      }
+
       redraw() {
-        const screen = this.shadowRoot.querySelector("calculator-screen");
-        screen.setAttribute("operand", this.calculator.operand);
-        screen.setAttribute("operator", this.calculator.operator);
-        screen.setAttribute("current-number", this.calculator.currentNumber);
+        this.screen.setAttribute("operand", this.calculator.operand);
+        this.screen.setAttribute("operator", this.calculator.operator);
+        this.screen.setAttribute(
+          "current-number",
+          this.calculator.currentNumber
+        );
       }
     }
   );

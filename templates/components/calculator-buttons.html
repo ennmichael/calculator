@@ -1,21 +1,80 @@
 <template id="calculator-buttons">
-  <calculator-button symbol="1"></calculator-button>
-  <calculator-button symbol="2"></calculator-button>
-  <calculator-button symbol="3"></calculator-button>
-  <calculator-button symbol="4"></calculator-button>
-  <calculator-button symbol="5"></calculator-button>
-  <calculator-button symbol="6"></calculator-button>
-  <calculator-button symbol="7"></calculator-button>
-  <calculator-button symbol="8"></calculator-button>
-  <calculator-button symbol="9"></calculator-button>
-  <calculator-button symbol="0"></calculator-button>
-  <calculator-button symbol="+"></calculator-button>
-  <calculator-button symbol="-"></calculator-button>
-  <calculator-button symbol="*"></calculator-button>
-  <calculator-button symbol="/"></calculator-button>
-  <calculator-button symbol="="></calculator-button>
-  <calculator-button symbol="del"></calculator-button>
-  <calculator-button symbol="clr"></calculator-button>
+  <div class="buttons">
+    <calculator-button style="grid-area: btn-1" symbol="1"></calculator-button>
+    <calculator-button style="grid-area: btn-2" symbol="2"></calculator-button>
+    <calculator-button style="grid-area: btn-3" symbol="3"></calculator-button>
+    <calculator-button style="grid-area: btn-4" symbol="4"></calculator-button>
+    <calculator-button style="grid-area: btn-5" symbol="5"></calculator-button>
+    <calculator-button style="grid-area: btn-6" symbol="6"></calculator-button>
+    <calculator-button style="grid-area: btn-7" symbol="7"></calculator-button>
+    <calculator-button style="grid-area: btn-8" symbol="8"></calculator-button>
+    <calculator-button style="grid-area: btn-9" symbol="9"></calculator-button>
+    <calculator-button style="grid-area: btn-0" symbol="0"></calculator-button>
+
+    <calculator-button
+      style="grid-area: btn-plus"
+      symbol="+"
+    ></calculator-button>
+
+    <calculator-button
+      style="grid-area: btn-minus"
+      symbol="-"
+    ></calculator-button>
+
+    <calculator-button
+      style="grid-area: btn-times"
+      symbol="*"
+    ></calculator-button>
+
+    <calculator-button
+      style="grid-area: btn-divides"
+      symbol="/"
+    ></calculator-button>
+
+    <calculator-button
+      style="grid-area: btn-equals"
+      symbol="="
+    ></calculator-button>
+
+    <calculator-button
+      style="grid-area: btn-cpy"
+      symbol="cpy"
+    ></calculator-button>
+
+    <calculator-button
+      style="grid-area: btn-pst"
+      symbol="pst"
+    ></calculator-button>
+
+    <calculator-button
+      style="grid-area: btn-neg"
+      symbol="neg"
+    ></calculator-button>
+
+    <calculator-button
+      style="grid-area: btn-del"
+      symbol="del"
+    ></calculator-button>
+
+    <calculator-button
+      style="grid-area: btn-clr"
+      symbol="clr"
+    ></calculator-button>
+  </div>
+
+  <style>
+    .buttons {
+      display: grid;
+      grid-template-rows: repeat(4, 2.5em);
+      grid-template-columns: repeat(5, 2.3em);
+      grid-template-areas:
+        "btn-1 btn-2 btn-3 btn-4 btn-5"
+        "btn-6 btn-7 btn-8 btn-9 btn-0"
+        "btn-plus btn-minus btn-times btn-divides btn-equals"
+        "btn-cpy btn-pst btn-neg btn-del btn-clr";
+      grid-gap: var(--border-size);
+    }
+  </style>
 </template>
 
 <script>

@@ -9,6 +9,7 @@ class Calculator {
     else if (symbol === "=") this.handleEquals();
     else if (symbol === "del") this.handleDelete();
     else if (symbol === "clr") this.clear();
+    else if (symbol === "neg") this.negate();
     else throw new Error(`Unknown symbol ${symbol}`);
   }
 
@@ -17,8 +18,21 @@ class Calculator {
   }
 
   handleDigit(digit) {
-    if (this.currentNumber === "0") this.currentNumber = digit;
+    if (this.currentNumberUnset()) this.setCurrentNumber(digit);
     else this.currentNumber += digit;
+  }
+
+  currentNumberUnset() {
+    return (
+      this.currentNumber === "" ||
+      this.currentNumber === "0" ||
+      this.currentNumber === "-0"
+    );
+  }
+
+  setCurrentNumber(digit) {
+    if (this.currentNumber.startsWith("-")) this.currentNumber = "-" + digit;
+    else this.currentNumber = digit;
   }
 
   isOperator(symbol) {
@@ -26,7 +40,14 @@ class Calculator {
   }
 
   handleOperator(operator) {
-    if (this.operator !== "") this.calculate();
+    if (this.operator !== "") {
+      if (this.currentNumberUnset()) {
+        this.operator = operator;
+        return;
+      }
+
+      this.calculate();
+    }
 
     this.operand = this.currentNumber;
     this.operator = operator;
@@ -74,5 +95,11 @@ class Calculator {
     this.operand = "";
     this.operator = "";
     this.currentNumber = "0";
+  }
+
+  negate() {
+    if (this.currentNumber.startsWith("-"))
+      this.currentNumber = this.currentNumber.substr(1);
+    else this.currentNumber = "-" + this.currentNumber;
   }
 }

@@ -1,3 +1,5 @@
+#!/usr/bin/env python3.8
+
 import time
 from os import listdir
 from os.path import isfile, join, dirname

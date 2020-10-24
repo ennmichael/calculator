@@ -120,5 +120,38 @@ describe("Calculator", function () {
     assert.equal(calculator.operand, "");
     assert.equal(calculator.operator, "");
     assert.equal(calculator.currentNumber, "32");
+
+    calculator.handleSymbol("neg");
+    assert.equal(calculator.operand, "");
+    assert.equal(calculator.operator, "");
+    assert.equal(calculator.currentNumber, "-32");
+  });
+
+  it("Should change the operator if the current number is not set", () => {
+    const calculator = new Calculator();
+    calculator.handleSymbol("1");
+    assert.equal(calculator.operand, "");
+    assert.equal(calculator.operator, "");
+    assert.equal(calculator.currentNumber, "1");
+
+    calculator.handleSymbol("+");
+    assert.equal(calculator.operand, "1");
+    assert.equal(calculator.operator, "+");
+    assert.equal(calculator.currentNumber, "0");
+
+    calculator.handleSymbol("*");
+    assert.equal(calculator.operand, "1");
+    assert.equal(calculator.operator, "*");
+    assert.equal(calculator.currentNumber, "0");
+
+    calculator.handleSymbol("neg");
+    assert.equal(calculator.operand, "1");
+    assert.equal(calculator.operator, "*");
+    assert.equal(calculator.currentNumber, "-0");
+
+    calculator.handleSymbol("+");
+    assert.equal(calculator.operand, "1");
+    assert.equal(calculator.operator, "+");
+    assert.equal(calculator.currentNumber, "-0");
   });
 });
