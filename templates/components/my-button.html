@@ -1,0 +1,50 @@
+<template id="my-button">
+  <div class="button">
+    <slot name="content">Button</slot>
+  </div>
+
+  <style>
+    .button {
+      width: 100%;
+      height: 100%;
+    }
+
+    .button:hover {
+      cursor: pointer;
+    }
+  </style>
+</template>
+
+<script>
+  customElements.define(
+    "my-button",
+    class extends HTMLElement {
+      constructor() {
+        super();
+        attachTemplate(this, document.querySelector("#my-button"));
+        const keyframes = [
+          { backgroundColor: "white" },
+          { backgroundColor: this.getAttribute("highlight-color") },
+          { backgroundColor: "white" },
+        ];
+        const timing = {
+          duration: 300,
+          iterations: 1,
+        };
+
+        const button = this.shadowRoot.querySelector(".button");
+        this.animation = button.animate(keyframes, timing);
+        this.animation.pause();
+        button.onclick = () => {
+          this.playAnimation();
+          this.onPressed();
+        };
+      }
+
+      playAnimation() {
+        this.animation.cancel();
+        this.animation.play();
+      }
+    }
+  );
+</script>
